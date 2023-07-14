@@ -474,13 +474,18 @@ static uint8_t *PreProcess(vsi_nn_tensor_t *tensor, vnn_input_meta_t *meta, uint
 static vsi_status _handle_multiple_inputs(vsi_nn_graph_t *graph, uint8_t *data)
 {
     const int inputID = 0;
+    const int inputID1 = 1;
     vsi_status status = VSI_FAILURE;
     vsi_nn_tensor_t *tensor = nullptr;
+    vsi_nn_tensor_t *tensor1 = nullptr;
     char dumpInput[128];
 
     tensor = vsi_nn_GetTensor(graph, graph->input.tensors[inputID]);
     data = PreProcess(tensor, &(input_meta_tab[0]), data);
     status = vsi_nn_CopyDataToTensor(graph, tensor, data);
+
+    tensor1 = vsi_nn_GetTensor(graph, graph->input.tensors[inputID1]);
+    status = vsi_nn_CopyDataToTensor(graph, tensor1, data);
     TEST_CHECK_STATUS(status, final);
 
     status = VSI_SUCCESS;
